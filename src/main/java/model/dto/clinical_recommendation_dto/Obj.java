@@ -12,6 +12,6 @@ import java.util.ArrayList;
 @NoArgsConstructor
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TableOfContents {
+public class Obj {
     ArrayList<Section> sections;
 }

@@ -1,6 +1,7 @@
 package model.dto.clinical_recommendation_dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,5 +16,6 @@ public class Data {
     boolean found;
     String id;
     String title;
-    String title_re;
+    @JsonProperty("title_re")
+    String titleRe;
 }

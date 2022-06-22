@@ -1,4 +1,4 @@
-package model.dto;
+package model.dto.mkb_dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
@@ -16,5 +16,5 @@ public class MkbDto {
     String resultText;
     String resultCode;
     int total;
-    List<ArrayList<MkbTableColumn>> list = new ArrayList<>();
+    final List<ArrayList<MkbDiseaseCodePair>> list = new ArrayList<>();
 }

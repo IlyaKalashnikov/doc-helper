@@ -15,7 +15,8 @@ import java.util.Date;
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ClinicalRecommendationDto {
-    int db_id;
+    @JsonProperty("db_id")
+    int dbId;
     int version;
     String id;
     String name;
@@ -30,15 +31,17 @@ public class ClinicalRecommendationDto {
     Object createdBy;
     int code;
     @JsonProperty("obj")
-    TableOfContents tableOfContents;
+    Obj obj;
     int ver;
     boolean adult;
     boolean child;
     @JsonProperty("NPC_approved")
-    boolean nPC_approved;
-    ArrayList<Integer> proff_associations;
+    boolean npcApproved;
+    @JsonProperty("proff_associations")
+    ArrayList<Integer> proffAssociations;
     ArrayList<Object> approved;
-    Date publish_date;
+    @JsonProperty("publish_date")
+    Date publishDate;
     ArrayList<Object> tablesArray;
     ArrayList<Object> tables;
 }

@@ -1,6 +1,7 @@
 package model.dto.clinical_recommendation_dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,15 +15,19 @@ import java.util.ArrayList;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Section {
     String content;
-    int content_index;
+    @JsonProperty("content_index")
+    int contentIndex;
     boolean found;
-    boolean donotsearch;
+    @JsonProperty("donotsearch")
+    boolean doNotSearch;
     String id;
     boolean required;
     String title;
-    int title_index;
+    @JsonProperty("title_index")
+    int titleIndex;
     ArrayList<Data> data;
-    int findrule;
+    @JsonProperty("findrule")
+    int findRule;
     int start;
     ArrayList<ArrayList<String>> rules;
 }

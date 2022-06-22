@@ -1,4 +1,4 @@
-package model.dto;
+package model.dto.mkb_dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MkbTableColumn {
+public class MkbDiseaseCodePair {
     String column;
     String value;
 }
