@@ -1,18 +1,17 @@
 package model.entity;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
 import org.hibernate.Hibernate;
-
 import java.util.Objects;
 
 @Entity
-@Table(name = "testMkb")
+@Table(name = "Codification")
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor

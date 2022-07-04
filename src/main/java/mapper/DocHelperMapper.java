@@ -1,33 +1,28 @@
 package mapper;
 
-import model.dto.clinical_recommendations_passport_dto.ClinicalRecommendationPassportDto;
-import model.dto.mkb_dto.MkbDiseaseCodePair;
-import model.dto.mkb_dto.MkbDto;
-import model.entity.ClinicalRecommendationPassportEntity;
+import model.dto.clinical_recommendation.ClinicalRecommendationDto;
+import model.dto.mkb.MkbDiseaseCodePair;
+import model.dto.mkb.MkbDto;
+import model.entity.ClinicalRecommendationEntity;
 import model.entity.MkbEntity;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DocHelperMapper {
     public List<MkbEntity> mkbDtoToEntity(MkbDto mkbDto) {
         return mkbDto.getList().stream()
-                .map(mkbDiseaseCodePairs -> {
-                    MkbEntity mkbEntity = new MkbEntity();
-                    for (MkbDiseaseCodePair pair : mkbDiseaseCodePairs) {
-                        if (pair.getColumn().equalsIgnoreCase("MKB_CODE")) {
-                            mkbEntity.setCode(pair.getValue());
-                        } else if (pair.getColumn().equalsIgnoreCase("MKB_NAME")) {
-                            mkbEntity.setDisease(pair.getValue());
-                        }
-                    }
-                    return mkbEntity;
-                })
+                .map(mkbDiseaseCodePairs ->
+                        MkbEntity.builder()
+                                .code(getMkbCode(mkbDiseaseCodePairs))
+                                .disease(getMkbName(mkbDiseaseCodePairs))
+                                .build())
                 .toList();
     }
 
-    public ClinicalRecommendationPassportEntity passportDtoToEntity(ClinicalRecommendationPassportDto dto) {
-        return ClinicalRecommendationPassportEntity.builder()
+    public ClinicalRecommendationEntity clinRecDtoToEntity(ClinicalRecommendationDto dto) {
+        return ClinicalRecommendationEntity.builder()
                 .id(dto.getId())
                 .name(dto.getName())
                 .mkb(dto.getMkb())
@@ -36,4 +31,23 @@ public class DocHelperMapper {
                 .build();
     }
 
+    private static String getMkbName(List<MkbDiseaseCodePair> pairList) {
+        String name = null;
+        for (MkbDiseaseCodePair pair : pairList) {
+            if (pair.getColumn().equalsIgnoreCase("MKB_NAME")) {
+                name = pair.getValue();
+            }
+        }
+        return name;
+    }
+
+    private static String getMkbCode(List<MkbDiseaseCodePair> pairList) {
+        String code = null;
+        for (MkbDiseaseCodePair pair : pairList) {
+            if (pair.getColumn().equalsIgnoreCase("MKB_CODE")) {
+                code = pair.getValue();
+            }
+        }
+        return code;
+    }
 }

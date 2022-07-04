@@ -1,4 +1,4 @@
-package model.dto.clinical_recommendation_dto;
+package model.dto.clinical_recommendation_content;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

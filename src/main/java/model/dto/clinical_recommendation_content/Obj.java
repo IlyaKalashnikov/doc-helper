@@ -1,20 +1,17 @@
-package model.dto.mkb_dto;
+package model.dto.clinical_recommendation_content;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MkbDto {
-    String result;
-    String resultText;
-    String resultCode;
-    int total;
-    final List<ArrayList<MkbDiseaseCodePair>> list = new ArrayList<>();
+public class Obj {
+    ArrayList<Section> sections;
 }

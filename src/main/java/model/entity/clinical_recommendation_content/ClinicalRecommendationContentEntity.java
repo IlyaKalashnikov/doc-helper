@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
-import model.dto.clinical_recommendation_dto.Obj;
+import model.dto.clinical_recommendation_content.Obj;
 
 import java.util.Date;
 

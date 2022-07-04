@@ -1,4 +1,4 @@
-package model.dto.clinical_recommendation_dto;
+package model.dto.clinical_recommendation_content;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -14,7 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ClinicalRecommendationDto {
+public class ClinicalRecommendationContentDto {
     @JsonProperty("db_id")
     int dbId;
     int version;

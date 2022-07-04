@@ -1,4 +1,4 @@
-package model.dto.clinical_recommendations_passport_dto;
+package model.dto.clinical_recommendation;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 @Getter
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ClinicalRecommendationPassportDto {
+public class ClinicalRecommendationDto {
     String id;
     int status;
     @JsonProperty("db_id")

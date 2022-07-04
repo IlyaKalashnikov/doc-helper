@@ -7,9 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Cleanup;
 import lombok.experimental.FieldDefaults;
-import model.dto.clinical_recommendations_passport_dto.ClinicalRecommendationPassportDto;
-import model.dto.mkb_dto.MkbDto;
-import model.dto.clinical_recommendation_dto.ClinicalRecommendationDto;
+import model.dto.clinical_recommendation.ClinicalRecommendationDto;
+import model.dto.mkb.MkbDto;
+import model.dto.clinical_recommendation_content.ClinicalRecommendationContentDto;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -42,7 +42,7 @@ public class DocHelperClient {
         return objectMapper.readValue(response.body().string(), MkbDto.class);
     }
 
-    public List<ClinicalRecommendationPassportDto> getAvailableClinRecs() throws IOException {
+    public List<ClinicalRecommendationDto> getAvailableClinRecs() throws IOException {
         HttpUrl url = new HttpUrl.Builder()
                 .scheme("https")
                 .host("apicr.minzdrav.gov.ru")
@@ -56,11 +56,11 @@ public class DocHelperClient {
 
         @Cleanup Response response = okHttpClient.newCall(request).execute();
         return objectMapper.readValue(response.body().string(),
-                new TypeReference<List<ClinicalRecommendationPassportDto>>() {
+                new TypeReference<List<ClinicalRecommendationDto>>() {
                 });
     }
 
-    public ClinicalRecommendationDto getClinRecById(String id) throws IOException {
+    public ClinicalRecommendationContentDto getClinRecById(String id) throws IOException {
         HttpUrl url = new HttpUrl.Builder()
                 .scheme("https")
                 .host("apicr.minzdrav.gov.ru")
@@ -74,6 +74,6 @@ public class DocHelperClient {
                 .build();
 
         @Cleanup Response response = okHttpClient.newCall(request).execute();
-        return objectMapper.readValue(response.body().string(), ClinicalRecommendationDto.class);
+        return objectMapper.readValue(response.body().string(), ClinicalRecommendationContentDto.class);
     }
 }

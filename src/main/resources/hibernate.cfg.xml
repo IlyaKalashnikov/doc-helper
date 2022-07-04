@@ -18,6 +18,7 @@
         <property name="format_sql">true</property>
 
         <mapping class="model.entity.MkbEntity"/>
+        <mapping class="model.entity.ClinicalRecommendationEntity"/>
 
     </session-factory>
 </hibernate-configuration>
