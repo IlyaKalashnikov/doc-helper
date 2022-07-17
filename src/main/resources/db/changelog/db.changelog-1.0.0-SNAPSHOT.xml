@@ -7,8 +7,7 @@
 		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
 		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
 		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
-    <changeSet id="0" author="Ilya_Kalashnikov">
-        <tagDatabase tag="v1.0.0"/>
-    </changeSet>
-    <include file="db.changelog-1.0.0-SNAPSHOT.xml" relativeToChangelogFile="true"/>
+    <include file="v.1.0.0-SNAPSHOT/create_table_clinrec.xml" relativeToChangelogFile="true"/>
+    <include file="v.1.0.0-SNAPSHOT/create_table_mkb.xml" relativeToChangelogFile="true"/>
+    <include file="v.1.0.0-SNAPSHOT/populate_data.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
