@@ -43,7 +43,7 @@ public class DocHelperMapper {
                                 .title(section.getTitle())
                                 .content(section.getContent())
                                 .build())
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private static String getMkbName(List<MkbDiseaseCodePair> pairList) {

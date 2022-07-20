@@ -79,6 +79,21 @@
             <artifactId>liquibase-maven-plugin</artifactId>
             <version>4.13.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+            <version>2.7.1</version>
+        </dependency>
+
+        <!--Без этой зависимости возникала ошибка:
+        java.lang.UnsatisfiedLinkError: could not load a native library: netty_resolver_dns_native_macos
+        Решение найдено здесь: https://github.com/netty/netty/issues/11020-->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-resolver-dns-native-macos</artifactId>
+            <version>4.1.72.Final</version>
+            <classifier>osx-aarch_64</classifier>
+        </dependency>
     </dependencies>
 
     <build>

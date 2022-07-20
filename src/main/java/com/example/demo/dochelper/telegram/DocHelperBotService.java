@@ -6,33 +6,22 @@ import com.example.demo.dochelper.model.entity.clinrec_content.ClinRecContent;
 import com.example.demo.dochelper.repository.mkb_repository.MkbRepository;
 import com.example.demo.dochelper.service.ClinRecContentService;
 import com.example.demo.dochelper.service.ClinRecService;
+import com.squareup.okhttp.HttpUrl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class DocHelperBotService {
     private final MkbRepository mkbRepository;
     private final ClinRecService clinRecService;
     private final ClinRecContentService clinRecContentService;
-
-    public DocHelperBotService(MkbRepository repository,
-                               ClinRecService clinRecService,
-                               ClinRecContentService clinRecContentService) {
-        this.mkbRepository = repository;
-        this.clinRecService = clinRecService;
-        this.clinRecContentService = clinRecContentService;
-    }
 
     public List<SendMessage> findMkbByDisease(Long chatId,
                                               String messageText) {
@@ -58,12 +47,13 @@ public class DocHelperBotService {
         for (MkbEntity entity : mkbEntityList) {
             List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
             List<InlineKeyboardButton> rowInline = new ArrayList<>();
+            InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
             InlineKeyboardButton button = new InlineKeyboardButton();
+
             button.setText("Проверить наличие клинических рекоммендаций");
             button.setCallbackData("/checkClinRec " + entity.getCode());
             rowInline.add(button);
             rowsInline.add(rowInline);
-            InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
             inlineKeyboardMarkup.setKeyboard(rowsInline);
 
             SendMessage message = new SendMessage();
@@ -87,7 +77,6 @@ public class DocHelperBotService {
             return resultList;
         }
 
-
         for (ClinicalRecommendationEntity entity : clinRecEntityList) {
             SendMessage sendMessage = new SendMessage();
             sendMessage.setChatId(chatId);
@@ -99,14 +88,14 @@ public class DocHelperBotService {
 
             List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
             List<InlineKeyboardButton> rowInline = new ArrayList<>();
-
+            InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
             InlineKeyboardButton button = new InlineKeyboardButton();
+
             button.setText("Содержание");
             button.setCallbackData("/getClinRecContent " + entity.getId());
             rowInline.add(button);
             rowsInline.add(rowInline);
 
-            InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
             inlineKeyboardMarkup.setKeyboard(rowsInline);
             sendMessage.setReplyMarkup(inlineKeyboardMarkup);
             resultList.add(sendMessage);
@@ -114,47 +103,30 @@ public class DocHelperBotService {
         return resultList;
     }
 
-    public List<SendMessage> getClinRecContents(Long chatId, String clinRecId) {
+    public List<SendMessage> getClinRecContent(Long chatId, String clinRecId) {
         List<ClinRecContent> clinRecContents = clinRecContentService.getClinRecContentsById(clinRecId);
         List<SendMessage> messageList = new ArrayList<>();
 
         for (ClinRecContent content : clinRecContents) {
             List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
             List<InlineKeyboardButton> rowInline = new ArrayList<>();
-
-            InlineKeyboardButton htmlButton = new InlineKeyboardButton();
-            htmlButton.setText("Читать");
-//            HttpUrl httpUrl = new HttpUrl.Builder()
-//                    .scheme("http")
-//                    .host("localhost")
-//                    .port(8080)                           //TODO Получить валидную урл
-//                    .addPathSegment("api")
-//                    .addPathSegment("clinrec")
-//                    .addQueryParameter("title", content.getTitle())
-//                    .addQueryParameter("id", clinRecId)
-//                    .build();
-//            String url = httpUrl.toString();
-//            htmlButton.setUrl(url);
-            if (content.getTitle().length() > 15) {
-                String callbackData = content.getTitle().substring(0, 15);
-                htmlButton.setCallbackData("/getHtml" + callbackData + ":" + clinRecId);
-            } else {
-                htmlButton.setCallbackData("/getHtml" + content.getTitle() + ":" + clinRecId);
-            }
-            rowInline.add(htmlButton);
-
-//            InlineKeyboardButton textButton = new InlineKeyboardButton();
-//            textButton.setText("Читать TXT");
-//            if (content.getTitle().length() > 15) {
-//                String callbackData = content.getTitle().substring(0, 15);
-//                textButton.setCallbackData("/getTxt" + callbackData + ":" + clinRecId);
-//            } else {
-//                textButton.setCallbackData("/getTxt" + content.getTitle() + ":" + clinRecId);
-//            }
-//            rowInline.add(textButton);
-            rowsInline.add(rowInline);
-
             InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+            InlineKeyboardButton htmlButton = new InlineKeyboardButton();
+
+            HttpUrl httpUrl = new HttpUrl.Builder()
+                    .scheme("http")
+                    .host("127.0.0.1")
+                    .port(8080)
+                    .addPathSegment("api")
+                    .addPathSegment("clinrec")
+                    .addQueryParameter("title", content.getTitle())
+                    .addQueryParameter("id", clinRecId)
+                    .build();
+            String url = httpUrl.toString();
+            htmlButton.setText("Читать");
+            htmlButton.setUrl(url);
+            rowInline.add(htmlButton);
+            rowsInline.add(rowInline);
             inlineKeyboardMarkup.setKeyboard(rowsInline);
 
             SendMessage sendMessage = new SendMessage();
@@ -165,64 +137,4 @@ public class DocHelperBotService {
         }
         return messageList;
     }
-
-    public SendDocument getHtmlContentByTitle(Long chatId, String callbackData) {
-        String[] info = callbackData.split(":");
-        String title = info[0];
-        String clinRecId = info[1];
-        List<ClinRecContent> clinRecContents = clinRecContentService.getClinRecContentsById(clinRecId);
-        ClinRecContent clinRecContent = null;
-        for (ClinRecContent content : clinRecContents) {
-            if (content.getTitle().contains(title)) {
-                clinRecContent = content;
-            }
-        }
-        File tempFile;
-        try {
-            tempFile = java.io.File.createTempFile(clinRecId, ".html");
-            BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-            writer.write(clinRecContent.getContent());
-            writer.flush();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        InputFile inputFile = new InputFile(tempFile);
-        SendDocument sendDocument = new SendDocument();
-        sendDocument.setChatId(chatId);
-        sendDocument.setDocument(inputFile);
-        tempFile.deleteOnExit();
-        return sendDocument;
-    }
-
-//    public SendDocument getTextContentByTitle(Long chatId, String callbackData) {
-//        String[] info = callbackData.split(":");
-//        String title = info[0];
-//        String clinRecId = info[1];
-//        List<ClinRecContent> clinRecContents = clinRecContentService.getClinRecContentsById(clinRecId);
-//        ClinRecContent clinRecContent = null;
-//        for (ClinRecContent content : clinRecContents) {
-//            if (content.getTitle().contains(title)) {
-//                clinRecContent = content;
-//            }
-//        }
-//        File tempFile;
-//        try {
-//
-//            tempFile = java.io.File.createTempFile(clinRecContent.getTitle(), ".txt");
-//            BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-//            Document document = Jsoup.parse(clinRecContent.getContent());
-//            writer.write(document.body().text());
-//            writer.flush();
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//        InputFile inputFile = new InputFile(tempFile);
-//        SendDocument sendDocument = new SendDocument();
-//        sendDocument.setChatId(chatId);
-//        sendDocument.setDocument(inputFile);
-//        tempFile.deleteOnExit();
-//        return sendDocument;
-//    }
-
-
 }
