@@ -42,10 +42,8 @@ public class ClinRecContentService {
                         .build())
                 .retrieve()
                 .bodyToMono(ClinRecContentDto.class)
-                .retryWhen(
-                        Retry.backoff(3, Duration.ofSeconds(1))
-                                .filter(throwable -> throwable instanceof java.net.SocketException)
-                );
+                .retryWhen(Retry.backoff(3, Duration.ofSeconds(2)).jitter(0.75));
+
         return mapper.clinRecContentDtoToEntity(clinRecContentDto);
     }
 

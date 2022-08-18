@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @TestConfiguration
-@EnableJpaRepositories(basePackages = {"com.example.demo.dochelper.repository.mkb_repository"})
-@EntityScan(basePackages = {"com.example.demo.dochelper.model.entity"})
+@EnableJpaRepositories(basePackages = {"com.example.dochelper.repository.mkb_repository"})
+@EntityScan(basePackages = {"com.example.dochelper.model.entity"})
 @EnableTransactionManagement
 public class MkbRepositoryTestConfig {
 }
