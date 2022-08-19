@@ -9,6 +9,10 @@ import com.example.dochelper.model.dto.mkb.MkbDto;
 import com.example.dochelper.model.entity.MkbEntity;
 import com.example.dochelper.model.entity.clinrec_content.ClinRecContent;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -18,8 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = DocHelperMapper.class)
 public class DocHelperMapperTest {
-    private final DocHelperMapper docHelperMapper = new DocHelperMapper();
+    @Autowired
+    private DocHelperMapper docHelperMapper;
 
     @Test
     public void mkbDtoToEntity_ShouldReturnRelevantMkbEntityObject(){

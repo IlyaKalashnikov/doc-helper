@@ -21,9 +21,9 @@ import static org.mockito.Mockito.when;
 @WebMvcTest (ClinRecController.class)
 public class ClinRecControllerTest {
     @MockBean
-    ClinRecContentService clinRecContentService;
+    private ClinRecContentService clinRecContentService;
     @Autowired
-    MockMvc mvc;
+    private MockMvc mvc;
 
     @Test
     public void controllerShouldAdressRelevantModel_modelShouldContainRelevantContent() throws Exception {

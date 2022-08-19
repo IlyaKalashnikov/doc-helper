@@ -24,9 +24,9 @@ import java.util.stream.Collectors;
 
 
 public class ClinRecContentServiceTest {
-    ClinRecContentService clinRecContentService;
-    DocHelperMapper docHelperMapper = mock(DocHelperMapper.class);
-    ObjectMapper objectMapper = new ObjectMapper();
+    private ClinRecContentService clinRecContentService;
+    private DocHelperMapper docHelperMapper = mock(DocHelperMapper.class);
+    private ObjectMapper objectMapper = new ObjectMapper();
     public static MockWebServer mockBackEnd;
 
     @BeforeAll
@@ -42,9 +42,10 @@ public class ClinRecContentServiceTest {
 
     @Test
     public void getClinRecContentsById_shouldSendGetRequestAndReturnEntityObject() throws IOException {
-        WebClient.Builder webclientBuilder = WebClient.builder();
-        clinRecContentService = new ClinRecContentService(docHelperMapper, webclientBuilder, String.format("http://localhost:%s",
-                mockBackEnd.getPort()));
+        clinRecContentService = new ClinRecContentService(docHelperMapper, WebClient.builder()
+                .baseUrl(String.format("http://localhost:%s",
+                        mockBackEnd.getPort()))
+                .build());
 
         ClinRecContentDto clinRecContentDto = new ClinRecContentDto();
         mockBackEnd.enqueue(new MockResponse()
@@ -70,9 +71,10 @@ public class ClinRecContentServiceTest {
 
     @Test
     public void getClinRecContentByTitle_shouldReturnContentForGivenTitle() throws JsonProcessingException {
-        WebClient.Builder webclientBuilder = WebClient.builder();
-        clinRecContentService = new ClinRecContentService(docHelperMapper, webclientBuilder, String.format("http://localhost:%s",
-                mockBackEnd.getPort()));
+        clinRecContentService = new ClinRecContentService(docHelperMapper, WebClient.builder()
+                .baseUrl(String.format("http://localhost:%s",
+                        mockBackEnd.getPort()))
+                .build());
 
         ClinRecContentDto clinRecContentDto = new ClinRecContentDto();
         mockBackEnd.enqueue(new MockResponse()
